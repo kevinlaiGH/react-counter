@@ -2,15 +2,23 @@ import React, { Component } from "react";
 
 class Counter extends Component {
   state = {
-    value: this.props.value
+    value: this.props.counter.value
   };
   styles = {
     fontSize: 10,
     fontWeight: "bold"
   };
 
+  //   This does not take into account the asychronous nature that setState can use and might cause errors with out of sync state data.
+  //     handleClick() {
+  //       this.setState({ value: this.state.value + 1 });
+  //     }
+
+  //   handleClick calls setState with a call back to increase the value from the previous state’s counter value
   handleClick() {
-    this.setState({ value: this.state.value + 1 });
+    this.setState((prevState, props) => {
+      return { value: prevState.value + 1 };
+    });
   }
 
   render() {
@@ -26,6 +34,12 @@ class Counter extends Component {
           className="btn btn-secondary btn-sm"
         >
           Increment
+        </button>
+        <button
+          onClick={() => this.props.onDelete(this.props.counter.id)}
+          className="btn btn-danger btn-sm m-2"
+        >
+          Delete
         </button>
       </React.Fragment>
     );
